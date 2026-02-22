@@ -2,46 +2,42 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>سجل المصاريف التشغيلية اليومية</title>
 
   <style>
     :root{
-      /* Palette derived from your logo */
       --brown:#4B2C10;
       --brown-2:#3A220C;
       --gold:#D4A33A;
-
       --ink:#0f172a;
       --muted:#475569;
-
       --paper:#ffffff;
       --bg1:#FFF7ED;
       --bg2:#FFFBF5;
-
       --line:#E7D7C9;
       --line2:#D7C2AF;
-
       --head:#FFF3E0;
       --head2:#FFE7C2;
-
       --shadow: 0 10px 28px rgba(2, 6, 23, .10);
       --radius:16px;
     }
 
-    *{ box-sizing:border-box; }
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    
     body{
       margin:0;
       font-family: Tahoma, Arial, sans-serif;
-      font-size:15px; /* أكبر على الشاشة */
+      font-size:16px; 
       color:var(--ink);
       background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      line-height: 1.5;
     }
 
     .wrap{
       max-width:1100px;
-      margin:18px auto;
-      padding:12px;
+      margin:0 auto;
+      padding:10px;
     }
 
     .page{
@@ -49,319 +45,215 @@
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow: var(--shadow);
-      padding:18px 18px 14px;
+      padding:15px;
       overflow:hidden;
     }
 
     .headerLogo{
       display:flex;
       justify-content:center;
-      align-items:center;
-      margin-bottom:6px;
+      margin-bottom:15px;
     }
 
     .logoBox{
-      width:300px;
-      height:150px;
-      border:none;
-      border-radius:14px;
-      background: transparent;
+      width:100%;
+      max-width:280px;
+      height:120px;
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
-      overflow:hidden;
       cursor:pointer;
-      user-select:none;
     }
-    .logoBox:active{ transform: translateY(1px); }
 
     #logoImg{
       width:100%;
       height:100%;
       object-fit:contain;
-      display:block;
-    }
-
-    input[type="text"], input[type="number"], input[type="date"]{
-      border:1px solid var(--line2);
-      border-radius:12px;
-      padding:10px 10px;
-      font-size:15px; /* أكبر */
-      outline:none;
-      width:100%;
-      background:#fff;
-    }
-    input:focus{
-      border-color: rgba(212,163,58,1);
-      box-shadow: 0 0 0 4px rgba(212,163,58,.20);
     }
 
     h1{
-      margin:6px 0 10px;
+      margin:10px 0 20px;
       text-align:center;
-      font-size:20px; /* أكبر */
-      letter-spacing:.2px;
+      font-size:1.4rem;
       color: var(--brown);
     }
 
-    .meta{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:14px;
-      margin-bottom:12px;
-    }
-    .meta th, .meta td{
-      border-bottom:1px solid var(--line);
-      border-left:1px solid var(--line);
-      padding:10px;
-      vertical-align:middle;
-      font-size:14px; /* أكبر */
-    }
-    .meta th{
-      background: linear-gradient(180deg, var(--head) 0%, var(--head2) 100%);
-      color:var(--brown);
-      font-weight:900;
-      text-align:right;
-      width:20%;
-      white-space:nowrap;
-    }
-    .meta td{ background:#fff; }
-    .meta tr:last-child th, .meta tr:last-child td{ border-bottom:none; }
-    .meta th:last-child, .meta td:last-child{ border-left:none; }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-start;
-      align-items:center;
-      margin:8px 0 10px;
-    }
-    .btns{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+    /* تحسين الجدول العلوي للجوال */
+    .meta {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
     }
 
-    button{
-      border:1px solid var(--line2);
-      background:#ffffff;
-      color:var(--brown);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-size:14px; /* أكبر */
-      font-weight:800;
+    .meta tr {
+      display: flex;
+      flex-wrap: wrap;
+      border: 1px solid var(--line);
+      margin-bottom: 10px;
+      border-radius: 10px;
+      overflow: hidden;
     }
-    button.primary{
-      background: linear-gradient(180deg, var(--brown) 0%, var(--brown-2) 100%);
-      color:#fff;
-      border-color: var(--brown-2);
-    }
-    button.danger{
-      background:#fff;
-      border-color:#ef4444;
-      color:#b91c1c;
-    }
-    button:active{ transform:translateY(1px); }
 
-    table.sheet{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      border:1px solid var(--line);
-      border-radius:14px;
-      overflow:hidden;
-      table-layout:fixed; /* يساعد على ثبات العرض */
+    .meta th, .meta td {
+      flex: 1 1 50%; /* يأخذ نصف العرض في الجوال */
+      padding: 12px;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
     }
-    .sheet thead th{
-      background: linear-gradient(180deg, var(--head) 0%, var(--head2) 100%);
-      font-weight:900;
-      font-size:14px; /* أكبر */
-      padding:10px;
-      border-bottom:1px solid var(--line);
-      border-left:1px solid var(--line);
-      text-align:right;
+
+    .meta th {
+      background: var(--head);
+      text-align: right;
       color: var(--brown);
-      white-space:nowrap;
-    }
-    .sheet thead th:last-child{ border-left:none; }
-
-    .sheet tbody td{
-      padding:6px 8px; /* أقل لتضمن صفحة واحدة */
-      border-bottom:1px solid var(--line);
-      border-left:1px solid var(--line);
-      background:#fff;
-      vertical-align:middle;
-    }
-    .sheet tbody tr:nth-child(even) td{
-      background:#FFFBF4;
-    }
-    .sheet tbody tr:last-child td{ border-bottom:none; }
-    .sheet tbody td:last-child{ border-left:none; }
-
-    .sheet tbody tr{ height:34px; } /* تثبيت ارتفاع الصف */
-
-    .col-num{ width:60px; text-align:center; color:var(--muted); font-weight:900; }
-    .col-desc{ width:auto; }
-    .col-amt{ width:220px; }
-
-    .descInput, .amtInput{
-      height:30px;             /* يمنع تمدد الصف */
-      padding:8px 10px;
-      border-radius:10px;
     }
 
-    .sheet thead th.col-amt,
-    .sheet tbody td.col-amt{
-      text-align:center;
-    }
-    .amtInput{
-      width:100%;
-      text-align:center;
-      direction:ltr;
-      font-variant-numeric: tabular-nums;
+    .meta td[colspan="3"] {
+      flex: 1 1 100%;
     }
 
-    .dateInput{
-      direction:ltr;
-      text-align:center;
-      font-variant-numeric: tabular-nums;
+    /* تحسين أزرار التحكم */
+    .actions {
+      margin-bottom: 15px;
     }
 
-    .totalLine{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-start;
-      padding-top:6px;
-    }
-    .totalLabel{
-      font-size:14px; /* أكبر */
-      color:var(--brown);
-      font-weight:900;
-    }
-    .totalValue{
-      font-weight:900;
-      direction:ltr;
-      text-align:left;
-      font-variant-numeric: tabular-nums;
-      padding:8px 12px;
-      border:1px solid var(--line2);
-      border-radius:12px;
-      min-width:180px;
-      background:#fff;
-      font-size:14px;
+    .btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    @media (max-width: 720px){
-      .logoBox{ width:240px; height:125px; }
-      .col-amt{ width:170px; }
-      h1{ font-size:18px; }
-      .meta th{ width:auto; }
+    button {
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid var(--line2);
+      cursor: pointer;
     }
 
-    /* Print */
-    @page{
-      size: A4 landscape;
-      margin: 8mm; /* مساحة أكبر للمحتوى */
+    button.primary { background: var(--brown); color: #fff; }
+    button.danger { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+
+    /* جعل جدول المصاريف قابلاً للتمرير على الشاشات الصغيرة */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      -webkit-overflow-scrolling: touch;
     }
-    @media print{
-      body{ background:#fff; font-size:12.5pt; } /* قيمة أنسب: أوضح بدون ما يكسر صفحة غالبًا */
-      .wrap{ margin:0; padding:0; max-width:none; }
-      .page{ box-shadow:none; border:none; border-radius:0; padding:0; }
 
-      /* أخفِ منطقة الأزرار بالكامل بالطباعة */
-      .actions{ display:none !important; }
-      button{ display:none !important; }
+    table.sheet {
+      width: 100%;
+      min-width: 500px; /* يمنع انضغاط الجدول بشدة */
+      border-collapse: collapse;
+    }
 
-      /* خطوط الإدخال شكلها طباعة */
-      input{
-        border:0 !important;
-        border-bottom:1px solid #111 !important;
-        border-radius:0 !important;
-        padding:6px 4px !important;
-        box-shadow:none !important;
-        height:auto !important;
-      }
+    .sheet th, .sheet td {
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
 
-      /* منع تقطيع الصفوف بين الصفحات */
-      table, tr, td, th { page-break-inside: avoid; }
+    .col-num { width: 45px; text-align: center; }
+    .col-amt { width: 120px; }
 
-      /* حافظ على ألوان الهيدر في PDF */
-      .sheet thead th, .meta th{
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
+    input[type="text"], input[type="number"], input[type="date"] {
+      padding: 8px;
+      border: 1px solid var(--line2);
+      border-radius: 8px;
+      font-size: 15px;
+      width: 100%;
+    }
+
+    .totalLine {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--head);
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .totalValue {
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--brown);
+    }
+
+    /* تعديلات الشاشات الكبيرة (الكمبيوتر) */
+    @media (min-width: 768px) {
+      .meta tr { display: table-row; }
+      .meta th, .meta td { display: table-cell; border: 1px solid var(--line); }
+      .btns { display: flex; }
+      button { padding: 10px 20px; width: auto; }
+      h1 { font-size: 1.8rem; }
+    }
+
+    @media print {
+      .actions, #logoInput { display: none !important; }
+      body { background: white; }
+      .page { box-shadow: none; border: none; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="page" id="page">
-
+    <div class="page">
+      
       <div class="headerLogo">
-        <div class="logoBox" id="logoBox" title="اضغط لتغيير الشعار (اختياري)">
+        <div class="logoBox" id="logoBox">
           <img id="logoImg" alt="شعار الشركة" src="https://www.genspark.ai/api/files/s/N7eKy1mf" />
           <input id="logoInput" type="file" accept="image/*" style="display:none" />
         </div>
       </div>
 
-      <h1>سجل المصاريف التشغيلية اليومية</h1>
+      <h1>سجل المصاريف التشغيلية</h1>
 
-      <table class="meta" aria-label="معلومات الفترة وبيانات القروب">
+      <table class="meta">
         <tr>
-          <th>فترة البداية (تاريخ)</th>
-          <td><input id="startDate" class="dateInput" type="date" /></td>
-
-          <th>فترة النهاية (تاريخ)</th>
-          <td><input id="endDate" class="dateInput" type="date" /></td>
+          <th>من تاريخ</th>
+          <td><input id="startDate" type="date" /></td>
+          <th>إلى تاريخ</th>
+          <td><input id="endDate" type="date" /></td>
         </tr>
-
         <tr>
           <th>اسم القروب</th>
-          <td colspan="3"><input id="groupName" type="text" placeholder="" /></td>
+          <td colspan="3"><input id="groupName" type="text" /></td>
         </tr>
-
         <tr>
           <th>عدد القروب</th>
-          <td>
-            <input id="groupCount" type="number" inputmode="numeric" min="0" step="1" placeholder="" />
-          </td>
-
-          <th>مسؤول القروب</th>
-          <td>
-            <input id="groupSupervisor" type="text" placeholder="" />
-          </td>
+          <td><input id="groupCount" type="number" inputmode="numeric" /></td>
+          <th>المسؤول</th>
+          <td><input id="groupSupervisor" type="text" /></td>
         </tr>
       </table>
 
       <div class="actions">
         <div class="btns">
-          <button class="primary" type="button" id="addRowBtn">+ إضافة صف</button>
-          <button class="danger" type="button" id="removeRowBtn">حذف آخر صف</button>
+          <button class="primary" id="addRowBtn">+ إضافة</button>
+          <button class="danger" id="removeRowBtn">حذف</button>
         </div>
       </div>
 
-      <table class="sheet" id="expensesTable" aria-label="جدول المصاريف">
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th class="col-desc">الوصف (تفصيلي)</th>
-            <th class="col-amt">المبلغ</th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
+      <div class="table-container">
+        <table class="sheet" id="expensesTable">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th>الوصف</th>
+              <th class="col-amt">المبلغ</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
 
-      <div class="totalLine" aria-label="الإجمالي">
-        <div class="totalLabel">الإجمالي:</div>
+      <div class="totalLine">
+        <div class="totalLabel">الإجمالي المشتمل:</div>
         <div class="totalValue" id="totalValue">0.00</div>
       </div>
 
@@ -369,101 +261,54 @@
   </div>
 
   <script>
-    const DEFAULT_ROWS = 10;
-
     const tbody = document.getElementById('tbody');
-    const addRowBtn = document.getElementById('addRowBtn');
-    const removeRowBtn = document.getElementById('removeRowBtn');
     const totalValueEl = document.getElementById('totalValue');
-
-    // Logo upload (click to replace)
-    const logoBox = document.getElementById('logoBox');
-    const logoInput = document.getElementById('logoInput');
-    const logoImg = document.getElementById('logoImg');
-
-    logoBox.addEventListener('click', () => logoInput.click());
-    logoInput.addEventListener('change', (e) => {
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
-
-      const reader = new FileReader();
-      reader.onload = () => { logoImg.src = reader.result; };
-      reader.readAsDataURL(file);
-    });
-
-    function fmt(n){
-      const x = Number(n || 0);
-      return x.toFixed(2);
-    }
 
     function recalcTotal(){
       let sum = 0;
-      const inputs = tbody.querySelectorAll('input.amtInput');
-      inputs.forEach(inp => {
-        const v = parseFloat(inp.value);
-        if(!isNaN(v)) sum += v;
+      document.querySelectorAll('.amtInput').forEach(inp => {
+        sum += parseFloat(inp.value) || 0;
       });
-      totalValueEl.textContent = fmt(sum);
-    }
-
-    function renumber(){
-      const nums = tbody.querySelectorAll('td.col-num');
-      nums.forEach((td, i) => td.textContent = (i+1));
-    }
-
-    function makeRow(){
-      const tr = document.createElement('tr');
-
-      const tdNum = document.createElement('td');
-      tdNum.className = 'col-num';
-      tdNum.textContent = '—';
-
-      const tdDesc = document.createElement('td');
-      tdDesc.className = 'col-desc';
-      const desc = document.createElement('input');
-      desc.type = 'text';
-      desc.className = 'descInput';
-      desc.placeholder = '';
-      tdDesc.appendChild(desc);
-
-      const tdAmt = document.createElement('td');
-      tdAmt.className = 'col-amt';
-      const amt = document.createElement('input');
-      amt.type = 'number';
-      amt.step = '0.01';
-      amt.min = '0';
-      amt.inputMode = 'decimal';
-      amt.className = 'amtInput';
-      amt.placeholder = '';
-      amt.addEventListener('input', recalcTotal);
-      tdAmt.appendChild(amt);
-
-      tr.appendChild(tdNum);
-      tr.appendChild(tdDesc);
-      tr.appendChild(tdAmt);
-
-      return tr;
+      totalValueEl.textContent = sum.toLocaleString('en-US', {minimumFractionDigits: 2});
     }
 
     function addRow(){
-      tbody.appendChild(makeRow());
-      renumber();
+      const rowCount = tbody.rows.length + 1;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="col-num">${rowCount}</td>
+        <td><input type="text" class="descInput"></td>
+        <td class="col-amt"><input type="number" step="0.01" inputmode="decimal" class="amtInput"></td>
+      `;
+      tbody.appendChild(tr);
+      tr.querySelector('.amtInput').addEventListener('input', recalcTotal);
     }
 
     function removeLastRow(){
-      const rows = tbody.querySelectorAll('tr');
-      if(rows.length === 0) return;
-      tbody.removeChild(rows[rows.length - 1]);
-      renumber();
-      recalcTotal();
+      if(tbody.rows.length > 0) {
+        tbody.deleteRow(-1);
+        recalcTotal();
+      }
     }
 
-    for(let i=0;i<DEFAULT_ROWS;i++) addRow();
+    // إضافة 5 صفوف افتراضية عند التشغيل
+    for(let i=0; i<5; i++) addRow();
 
-    addRowBtn.addEventListener('click', addRow);
-    removeRowBtn.addEventListener('click', removeLastRow);
-
-    recalcTotal();
+    document.getElementById('addRowBtn').addEventListener('click', addRow);
+    document.getElementById('removeRowBtn').addEventListener('click', removeLastRow);
+    
+    // تغيير الشعار
+    const logoBox = document.getElementById('logoBox');
+    const logoInput = document.getElementById('logoInput');
+    logoBox.addEventListener('click', () => logoInput.click());
+    logoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = (ev) => document.getElementById('logoImg').src = ev.target.result;
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
 </body>
 </html>
